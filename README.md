@@ -1,4 +1,4 @@
-# 🌟 maeve
+# 🌟 maeve (currently work in progress!)
 
 maeve is a simple open-source Discord bot built with [Discord JDA](https://github.com/discord-jda/JDA)
 
