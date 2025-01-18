@@ -25,7 +25,7 @@ public class CommandManager extends ListenerAdapter {
 		}
 		else if (command.equals("ping")) {
 			String userTag = event.getUser().getAsMention();
-			event.reply("ping! " + userTag).queue();
+			event.reply("pong! " + userTag).queue();
 		}
 		// roles
 		else if (command.equals("roles")) {
@@ -44,7 +44,7 @@ public class CommandManager extends ListenerAdapter {
 		}
 	}
 
-	// Guild Commands
+	// guild commands
 
 	@Override
 	public void onGuildReady(GuildReadyEvent event) {

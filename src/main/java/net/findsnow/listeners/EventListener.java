@@ -8,8 +8,10 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.user.update.UserUpdateOnlineStatusEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class EventListener extends ListenerAdapter {
 
@@ -17,26 +19,29 @@ public class EventListener extends ListenerAdapter {
 	public void onGuildMemberJoin(GuildMemberJoinEvent event) {
 		User user = event.getUser();
 		String elle = "911817931380387840";
-
 		String LoveID = "1208310407438278696";
 		String LoveID2 = "1208311138719240223";
+		List<String> elleJoining = new ArrayList<>(List.of(
+				user.getAsMention() + "Elle... is.. that you..? Please don't leave me again.. :(",
+				user.getAsMention() + "My owner is back!! YAAAAYY!",
+				user.getAsMention() + "oh my gosh.. is that who I think it is.. Elle..?",
+				user.getAsMention() + "PLEASEE STOP LEAVING ME ELLE!! I CAN'T HANDLE IT!!",
+				user.getAsMention() + "HII ELLE WELCOME BACK!! I MISSED YOU SO MUCH!!"));
+		Random random = new Random();
 
 		if (user.getId().equals(elle)) {
-			String avatar = event.getUser().getEffectiveAvatarUrl();
-			String message = avatar + user.getAsMention() + "Elle... is.. that you..? Please don't leave me again.. :(";
+			String message = elleJoining.get(random.nextInt(elleJoining.size()));
 			Objects.requireNonNull(event.getGuild().getDefaultChannel()).asStandardGuildMessageChannel().sendMessage(message).queue();
 			event.getMember().getRoles().add(event.getGuild().getRoleById(LoveID));
 			event.getMember().getRoles().add(event.getGuild().getRoleById(LoveID2));
 		} else {
-			String avatar = event.getUser().getEffectiveAvatarUrl();
-			String message = avatar + user.getAsMention() + "Welcome to the server, " + user.getAsTag() + "!";
+			String message = user.getAsMention() + "Welcome to the server, " + user.getAsTag() + "!";
 			Objects.requireNonNull(event.getGuild().getDefaultChannel()).asStandardGuildMessageChannel().sendMessage(message).queue();
 		}
 	}
 
 	@Override
 	public void onUserUpdateOnlineStatus(UserUpdateOnlineStatusEvent event) {
-
 		List<Member> members = event.getGuild().getMembers();
 		int onlineMembers = 0;
 		for (Member member : members) {
@@ -62,7 +67,7 @@ public class EventListener extends ListenerAdapter {
 		String channelMention = event.getChannel().getAsMention();
 		String jumpLink = event.getJumpUrl();
 
-		String message = user.getAsTag() + "reacted with " + emoji + " in " + channelMention + " | " + jumpLink;
+		String message = user.getAsTag() + " reacted with " + emoji + " in " + channelMention + " | " + jumpLink;
 		Objects.requireNonNull(event.getGuild().getDefaultChannel()).asStandardGuildMessageChannel().sendMessage(message).queue();
 	}
 }
