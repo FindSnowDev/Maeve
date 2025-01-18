@@ -1,7 +1,7 @@
-# 🌟 maeve (currently work in progress!)
+# 🌟 maeve (currently work in progress)
 
 <div style="text-align: right;">
-    <img src="https://github.com/user-attachments/assets/0f3f1139-dc94-411f-9a38-06a21fe40cb2" width="150" alt="maeve logo">
+    <img src="https://github.com/user-attachments/assets/0f3f1139-dc94-411f-9a38-06a21fe40cb2" width="130" alt="maeve logo">
 </div>
 
 maeve is a simple open-source Discord bot built with [Discord JDA](https://github.com/discord-jda/JDA)
