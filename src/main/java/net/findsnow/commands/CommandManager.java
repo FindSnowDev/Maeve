@@ -9,53 +9,44 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.findsnow.commands.independent.ICommand;
+import net.findsnow.commands.independent.MaeveCommand;
+import net.findsnow.commands.independent.PingCommand;
+import net.findsnow.commands.independent.SayCommand;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommandManager extends ListenerAdapter {
+	private final Map<String, ICommand> commands = new HashMap<>();
+
+	public CommandManager() {
+		addCommand(new MaeveCommand());
+		addCommand(new PingCommand());
+		addCommand(new SayCommand());
+	}
+
+	private void addCommand(ICommand command) {
+		commands.put(command.getCommandData().getName(), command);
+	}
 
 	@Override
 	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-
-		String command = event.getName();
-		if (command.equals("maeve")) {
-			String userTag = event.getUser().getAsMention();
-			event.reply("meow! " + userTag + " yes I am a cat!!").queue();
-		}
-		else if (command.equals("ping")) {
-			String userTag = event.getUser().getAsMention();
-			event.reply("pong! " + userTag).queue();
-		}
-		// roles
-		else if (command.equals("roles")) {
-			event.deferReply().setEphemeral(true).queue();
-			String response = "";
-			for (Role role : event.getGuild().getRoles()) {
-				response += role.getAsMention() + "\n";
-			}
-			event.getHook().sendMessage(response).queue();
-		}
-		else if (command.equals("say")) {
-			OptionMapping messageOption = event.getOption("message");
-			String message = messageOption.getAsString();
-			event.getChannel().sendMessage(message).queue();
-			event.reply("okay! im a cat i dont know human words..").queue();
+		String commandName = event.getName();
+		ICommand command = commands.get(commandName);
+		if (command != null) {
+			command.execute(event);
 		}
 	}
-
-	// guild commands
 
 	@Override
 	public void onGuildReady(GuildReadyEvent event) {
 		List<CommandData> commandData = new ArrayList<>();
-		commandData.add(Commands.slash("maeve", "Maeve talks"));
-		commandData.add(Commands.slash("ping", "Do it"));
-		commandData.add(Commands.slash("roles", "Display Roles"));
-
-		OptionData option1 = new OptionData(OptionType.STRING, "message", "Go ahead and write something for me to say", true);
-		commandData.add(Commands.slash("say", "Make Maeve say something").addOptions(option1));
-
+		for (ICommand command : commands.values()) {
+			commandData.add(command.getCommandData());
+		}
 		event.getGuild().updateCommands().addCommands(commandData).queue();
 	}
 }
